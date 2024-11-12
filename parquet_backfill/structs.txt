@@ -18,3 +18,5 @@ StructField(naics_code,IntegerType,true), StructField(naics_description,StringTy
 
 zone_dim
 StructField(zone_key,IntegerType,true), StructField(version_key,IntegerType,true), StructField(zoneid,IntegerType,true), StructField(zonename,StringType,true), StructField(description,StringType,true), StructField(created_on,StringType,true), StructField(modified_on,StringType,true), StructField(organicid,StringType,true), StructField(affiliateid,IntegerType,true), StructField(website_name,StringType,true), StructField(website_key,IntegerType,true), StructField(website_tag,StringType,true), StructField(ad_type_key,IntegerType,true), StructField(ad_product_key,IntegerType,true), StructField(product,StringType,true), StructField(domain,StringType,true), StructField(webapp,StringType,true), StructField(webapp_key,IntegerType,true)
+
+

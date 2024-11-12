@@ -22,17 +22,21 @@ def main():
 				print('  val df = lines.map(line=>{')
 				print('    val oldfields = line(0).toString.split("\\t")')
 				print('    var fields = oldfields')
-				print('    if(oldfields.length<'+str(len(types))+') fields = oldfields.padTo('+str(len(types))+',"")')
+				print('    if(oldfields.length<'+str(len(types))+') fields = oldfields.padTo('+str(len(types))+',null)')
 				sys.stdout.write('    class_'+name+'(')
 				for i in range(0,len(types)):
 					if(i>0):
 						sys.stdout.write(',')
 					if(types[i] == 'Boolean'):
 						sys.stdout.write('str2bool(')
-					if(types[i] == 'Integer'):
+					elif(types[i] == 'Integer'):
 						sys.stdout.write('str2int(')
+					elif(types[i] == 'Long'):
+						sys.stdout.write('str2long(')
+					elif(types[i] == 'String'):
+						sys.stdout.write('checknull(')
 					sys.stdout.write('fields('+str(i)+')')
-					if(types[i] == 'Boolean' or types[i] == 'Integer'):
+					if(types[i] == 'Boolean' or types[i] == 'Integer' or types[i] == 'String' or types[i] == 'Long'):
 						sys.stdout.write(')')
 				sys.stdout.write(')')
 				print('})')
@@ -78,7 +82,7 @@ def main():
 						scalatype = 'String'
 					types.append(scalatype)
 
-	print(col_names)
+	#print(col_names)
 
 
 if __name__=="__main__":
