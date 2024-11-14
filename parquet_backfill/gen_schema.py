@@ -33,10 +33,12 @@ def main():
 						sys.stdout.write('str2int(')
 					elif(types[i] == 'Long'):
 						sys.stdout.write('str2long(')
+					elif(types[i] == 'Float'):
+						sys.stdout.write('str2float(')
 					elif(types[i] == 'String'):
 						sys.stdout.write('checknull(')
 					sys.stdout.write('fields('+str(i)+')')
-					if(types[i] == 'Boolean' or types[i] == 'Integer' or types[i] == 'String' or types[i] == 'Long'):
+					if(types[i] == 'Boolean' or types[i] == 'Integer' or types[i] == 'String' or types[i] == 'Long' or types[i] == 'Float'):
 						sys.stdout.write(')')
 				sys.stdout.write(')')
 				print('})')

@@ -30,6 +30,14 @@ def str2long(str:String):java.lang.Long={
   }
 }
 
+def str2float(str:String):java.lang.Float={
+  try{
+    str.toFloat
+  }catch{
+    case e:Exception => null
+  }
+}
+
 def checknull(str:String):String={
   if (str==null || str.equals("\\N")){
     null
