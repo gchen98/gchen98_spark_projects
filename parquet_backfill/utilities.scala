@@ -1,5 +1,19 @@
+import java.sql.Timestamp
+import java.time.LocalDateTime
+import org.apache.hadoop.fs.{FileSystem, Path,FileChecksum}
+
+import org.apache.hadoop.fs.Path
 import org.apache.spark.sql.types.{StructType, StructField, BooleanType, IntegerType, StringType, DoubleType}
 import org.apache.spark.sql.Dataset
+
+def getHourFromFile(fs:FileSystem,filePath:Path):Int={
+  val fileStatus = fs.getFileStatus(filePath)
+  val modificationTime = fileStatus.getModificationTime
+  val timestamp = new Timestamp(modificationTime)
+  val localDateTime = timestamp.toLocalDateTime
+  val hour = localDateTime.getHour
+  hour
+}
 
 def str2bool(str:String):java.lang.Boolean={
   if(str==null){
@@ -52,3 +66,7 @@ def colcount(inPath:String):Integer={
 }
   
 
+def pad(x:Int):String={
+  if(x<10) "0"+x.toString
+  else x.toString
+}

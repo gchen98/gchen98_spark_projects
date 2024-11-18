@@ -226,5 +226,14 @@ def main(path:Path):Unit={
   } 
 }
 
-val path = new Path("/ccr/????/??/??/*.tsv")
-main(path)
+def pad(x:Int):String={
+  if(x<10) "0"+x.toString
+  else x.toString
+}
+
+for(year<-2017 to 2022){
+  for(month<-1 to 12){
+    val path = new Path("/ccr/"+year.toString+"/"+pad(month)+"/??/*.tsv")
+    main(path)
+  }
+}

@@ -1,14 +1,15 @@
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path,FileChecksum}
 
-val newdir = "parquet_backfill"
 def convert(fs:FileSystem,file:Path):Unit={
   val filename:String = file.toString
-  val basefile:String = filename.substring(0,filename.indexOf("."))
-  val newbasefile:String = basefile.replace("hdfs://yarn-cluster/prod/nifi",newdir)
+  val tokens = filename.split("/")
+  val month = tokens(tokens.length-1).replace(".avro","")
+  val year = tokens(tokens.length-2)
+  val table  = tokens(tokens.length-3)
+  val newbasefile:String = "parquet_backfill/openx/"+table+"/"+year+"/"+month
+  println("Converting "+filename+" to "+newbasefile)
   fs.delete(new Path(newbasefile),true)
-  println("Converting "+basefile+" to "+newbasefile)
-
   val df = spark.read.format("avro").load(filename)
   df.repartition(1).write.mode("overwrite").parquet(newbasefile)
   val path = new Path(newbasefile+"/*.parquet")
@@ -28,17 +29,10 @@ def main(path:Path):Unit={
   }
 }
 
-val base_path = "/prod/nifi/fc_meta/website/*"
 def pad(x:Int):String={
   if(x<10) "0"+x.toString
   else x.toString
 }
 
-for(year<-2024 to 2024){
-  for(month<-7 to 12){
-   val path = new Path(base_path+"/"+pad(year)+"/"+pad(month)+"/??.avro")
-   println("Checking Path: "+path)
-   main(path)
-  }
-}
-
+val path = new Path("/prod/nifi/openx/ox_data_summary_ad_hourly/????/??.avro")
+main(path)

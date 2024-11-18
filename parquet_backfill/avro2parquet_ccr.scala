@@ -31,6 +31,15 @@ def main(path:Path):Unit={
   }
 }
 
-val path = new Path("/prod/nifi/ccr/????/??/??/*.avro")
-main(path)
+def pad(x:Int):String={
+  if(x<10) "0"+x.toString
+  else x.toString
+}
+
+for(year<-2017 to 2022){
+  for(month<-1 to 12){
+    val path = new Path("/prod/nifi/ccr/"+year.toString+"/"+pad(month)+"/??/*.avro")
+    main(path)
+  }
+}
 
