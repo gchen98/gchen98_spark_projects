@@ -1,6 +1,8 @@
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path,FileChecksum}
 
+:load utilities.scala
+
 def convert(fs:FileSystem,file:Path):Unit={
   val filename:String = file.toString
   val tokens = filename.split("/")
@@ -41,4 +43,7 @@ def pad(x:Int):String={
 }
 
 val path = new Path("/prod/nifi/openx/*/????/??/??/data.avro")
-main(path)
+//main(path)
+//delete_files(new Path("parquet_backfill/openx/*/????/??/??.parquet"))
+delete_months(new Path("parquet_backfill/openx/*/????/??"))
+delete_years(new Path("parquet_backfill/openx/*/????"))

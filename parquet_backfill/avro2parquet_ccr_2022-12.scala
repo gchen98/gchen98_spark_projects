@@ -1,15 +1,15 @@
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs.{FileSystem, Path,FileChecksum}
 
-:load utilities.scala
-
+val newdir = "parquet_backfill"
 def convert(fs:FileSystem,file:Path):Unit={
   val filename:String = file.toString
   val tokens = filename.split("/")
-  val month = tokens(tokens.length-1).replace(".avro","")
-  val year = tokens(tokens.length-2)
-  val table  = tokens(tokens.length-3)
-  val newbasefile:String = "parquet_backfill/openx/"+table+"/"+year+"/"+month
+  val table = tokens(tokens.length-1).replace(".avro","")
+  val day = tokens(tokens.length-2)
+  val month  = tokens(tokens.length-3)
+  val year = tokens(tokens.length-4)
+  val newbasefile:String = "parquet_backfill/ccr/"+table+"/"+year+"/"+month+"/"+day
   println("Converting "+filename+" to "+newbasefile)
   fs.delete(new Path(newbasefile),true)
   val df = spark.read.format("avro").load(filename)
@@ -36,5 +36,10 @@ def pad(x:Int):String={
   else x.toString
 }
 
-main(new Path("/prod/nifi/openx/ox_data_summary_ad_hourly/????/??.avro"))
-delete_files(new Path("parquet_backfill/openx/ox_data_summary_ad_hourly/????/??.parquet"))
+for(year<-2022 to 2022){
+  for(month<-12 to 12){
+    val path = new Path("/prod/nifi/ccr/"+year.toString+"/"+pad(month)+"/??/*.avro")
+    main(path)
+  }
+}
+
