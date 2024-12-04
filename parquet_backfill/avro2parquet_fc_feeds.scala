@@ -10,6 +10,10 @@ def convert(fs:FileSystem,file:Path):Unit={
   val year = tokens(tokens.length-4)
   val table = tokens(tokens.length-5)
   val newbasefile:String = "parquet_backfill/fc_feeds/"+table+"/"+year+"/"+month+"/"+day+"/"+hour
+  if(fs.exists(new Path(newbasefile+".parquet"))){
+    println(newbasefile+".parquet exists already. Skipping")
+    return
+  }
   println("Converting "+filename+" to "+newbasefile)
   fs.delete(new Path(newbasefile),true)
   val df = spark.read.format("avro").load(filename)
